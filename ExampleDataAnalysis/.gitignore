@@ -1,0 +1,13 @@
+bin
+obj
+.vs
+*.log
+*.suo
+packages
+
+# Dot Net Core
+project.lock.json
+artifacts/
+*.xproj.user
+*.xproj
+*.user

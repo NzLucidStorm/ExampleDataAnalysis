@@ -1,0 +1,9 @@
+﻿
+WITH RankedObservations as (
+    SELECT o.*, ROW_NUMBER() OVER (PARTITION BY Province, Country ORDER BY LastUpdate DESC) AS rn
+    FROM [sample].[Observation] o
+
+)
+select sum(r.Confirmed), sum(r.Deaths), sum(r.Recovered)
+from RankedObservations r
+where r.rn = 1 and r.LastUpdate >= '2020-01-23 00:00:00.0000000'
