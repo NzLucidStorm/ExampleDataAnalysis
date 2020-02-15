@@ -60,7 +60,7 @@ namespace ExampleDataAnalysis.Github
             var observationDateTimes = header
                 .Skip(4)
                 .Select(x => DateTime.Parse(x, CultureInfo.InvariantCulture))
-                .ToList();
+                .ToArray();
 
             // Now create a Lookup on the Raw Datas Province and Country:
             var confirmedLookup = confirmed.Skip(1)
@@ -79,56 +79,35 @@ namespace ExampleDataAnalysis.Github
                 .ToDictionary(x => $"{x[0]},{x[1]}", x => x);
 
             // Get all keys we want to iterate over:
-            var keys = confirmedLookup.Keys.Concat(deathsLookup.Keys).Concat(recoveredLookup.Keys).Distinct().ToList();
+            var keys = confirmedLookup.Keys
+                .Concat(deathsLookup.Keys)
+                .Concat(recoveredLookup.Keys)
+                .Distinct()
+                .ToList();
 
             foreach(var key in keys)
             {
-                // We now zip all 3 series, this will lead to an Exception if a key is missing for any Lookup dictionary:
-                var observations = ZipThree(
-                    first: confirmedLookup[key].Skip(4), 
-                    second: deathsLookup[key].Skip(4), 
-                    third: recoveredLookup[key].Skip(4), 
-                    func: (first, second, third) => new { Confirmed = first, Death = second, Recovered = third })
-                    // Now zip with the Observation Date Time in the Header:
-                    .Zip(observationDateTimes, (value, dateTime) => new Observation
-                     {
-                         Province = confirmedLookup[key][0],
-                         Country = confirmedLookup[key][1],
-                         Lat = double.Parse(confirmedLookup[key][2].Trim(), CultureInfo.InvariantCulture),
-                         Lon = double.Parse(confirmedLookup[key][3].Trim(), CultureInfo.InvariantCulture),
-                         Timestamp = dateTime,
-                         Confirmed = GetCountSafe(value.Confirmed),
-                         Deaths = GetCountSafe(value.Death),
-                         Recovered = GetCountSafe(value.Recovered)
-                     });
+                var confirmedValues = confirmedLookup[key];
+                var deathValues = deathsLookup[key];
+                var recoveredValues = recoveredLookup[key];
 
-                // And return the observations flat out:
-                foreach(var observation in observations)
+                for(int timeStepIdx = 0; timeStepIdx < observationDateTimes.Length; timeStepIdx++)
                 {
-                    yield return observation;
-                }
-            }
-        }
-
-        public static IEnumerable<TResult> ZipThree<T1, T2, T3, TResult>(IEnumerable<T1> first, IEnumerable<T2> second, IEnumerable<T3> third, Func<T1, T2, T3, TResult> func)
-        {
-            using (var e1 = first.GetEnumerator())
-            {
-                using (var e2 = second.GetEnumerator())
-                {
-                    using (var e3 = third.GetEnumerator())
+                    yield return new Observation
                     {
-                        {
-                            while (e1.MoveNext() && e2.MoveNext() && e3.MoveNext())
-                            {
-                                yield return func(e1.Current, e2.Current, e3.Current);
-                            }
-                        }
-                    }
+                        Province = confirmedLookup[key][0],
+                        Country = confirmedLookup[key][1],
+                        Lat = double.Parse(confirmedLookup[key][2].Trim(), CultureInfo.InvariantCulture),
+                        Lon = double.Parse(confirmedLookup[key][3].Trim(), CultureInfo.InvariantCulture),
+                        Timestamp = observationDateTimes[timeStepIdx],
+                        Confirmed = GetCountSafe(confirmedValues[timeStepIdx + 4]),
+                        Deaths = GetCountSafe(deathValues[timeStepIdx + 4]),
+                        Recovered = GetCountSafe(recoveredValues[timeStepIdx + 4])
+                    };
                 }
             }
         }
-
+        
         private static int GetCountSafe(string value)
         {
             if(string.IsNullOrWhiteSpace(value))
