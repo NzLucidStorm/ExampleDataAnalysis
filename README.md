@@ -22,6 +22,10 @@ I thought a first step is to show how to parse the data by the John Hopkins Univ
 get it into a SQL database. From there we can process the data using tools like SQL, Microsoft 
 Excel, R and so on.
 
+The article for this repository can be found at:
+
+* [https://bytefish.de/blog/parsing_covid_19_data/](https://bytefish.de/blog/parsing_covid_19_data/)
+
 ### Creating the SQL Server Database ###
 
 You create the SQL Server database by running the Batch Script located at:
@@ -33,3 +37,4 @@ You create the SQL Server database by running the Batch Script located at:
 The code is released under terms of the [MIT License].
 
 [MIT License]: https://opensource.org/licenses/MIT
+[John Hopkins University]: [https://systems.jhu.edu/]
