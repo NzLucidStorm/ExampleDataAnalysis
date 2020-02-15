@@ -26,7 +26,7 @@ Excel, R and so on.
 
 You create the SQL Server database by running the Batch Script located at:
 
-* []()
+* [ExampleDataAnalysis/ExampleDataAnalysis/SqlServer/Sql/create_database.bat](https://github.com/bytefish/ExampleDataAnalysis/blob/master/ExampleDataAnalysis/ExampleDataAnalysis/SqlServer/Sql/create_database.bat)
 
 ## License ##
 
