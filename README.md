@@ -1,6 +1,6 @@
 # ExampleDataAnalysis #
 
-A new decease called [COVID-19] appeared in December 2019 and is headlining news all 
+A new decease called COVID-19 appeared in December 2019 and is headlining news all 
 around the world. There is much we still have to learn about it, but fear travels fast 
 these days... thanks to Twitter, Facebook and social media. 
 
