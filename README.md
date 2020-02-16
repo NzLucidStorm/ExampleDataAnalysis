@@ -6,7 +6,7 @@ these days... thanks to Twitter, Facebook and social media.
 
 So what can we do about it? Maybe get some official data first.
 
-The [John Hopkins University] operates a dashboard for tracking the [COVID-19] spread and 
+The [John Hopkins University] operates a dashboard for tracking the COVID-19 spread and 
 shares the data in a Github repository:
 
 > This is the data repository for the 2019 Novel Coronavirus Visual Dashboard operated by 
